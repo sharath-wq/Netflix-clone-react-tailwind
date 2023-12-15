@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .nav-icon {
+        @apply my-0 mx-4;
+        cursor: pointer;
+    }
+    .main-color {
+        @apply bg-[#0b0b0b];
+    }
+}
