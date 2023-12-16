@@ -1,20 +1,26 @@
 import { FaPlay, FaInfoCircle } from "react-icons/fa";
 import Button from "./Button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { banner_url, baseImage } from "../../constents";
+import { generateRandomIndex } from "../../utils/helpler";
 
 const Featured = () => {
+    const [banner, setBanner] = useState({});
+
+    const { backdrop_path, original_title, overview, title } = banner;
+
+    useEffect(() => {
+        axios.get(banner_url).then((response) => setBanner(response.data.results[generateRandomIndex()]));
+    }, []);
+
     return (
         <div className="h-[90vh] relative">
-            <img
-                className="w-full h-full object-cover"
-                src="https://image.tmdb.org/t/p/original/yOm993lsJyPmBodlYjgpPwBjXP9.jpg"
-                alt=""
-            />
+            <img className="w-full h-full object-cover" src={baseImage + backdrop_path} alt="" />
             <div className="w-1/3 absolute left-28 bottom-60 flex flex-col">
                 {/* Info */}
-                <h1 className="text-6xl text-white font-bold">Wonka</h1>
-                <span className="my-5 mx-0 text-base text-white font-medium">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur, praesentium.
-                </span>
+                <h1 className="text-6xl text-white font-bold">{title && original_title}</h1>
+                <span className="my-5 mx-0 text-base text-white font-medium">{overview}</span>
                 <div className="flex ">
                     {/* buttons */}
                     <Button style={"bg-white text-[main-color] hover:bg-[#d2d9d8]"} icon={<FaPlay />} text={"Play"} />
