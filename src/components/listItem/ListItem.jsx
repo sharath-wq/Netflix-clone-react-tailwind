@@ -48,7 +48,6 @@ const ListItem = ({ backdrop_path }) => {
                             src={trailer}
                             autoPlay
                             loop
-                            muted
                             onLoadedData={handleVideoLoaded}
                             style={{ display: isVideoLoaded ? "block" : "none" }}
                         ></video>
