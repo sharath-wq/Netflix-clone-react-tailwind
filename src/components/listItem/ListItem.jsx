@@ -9,9 +9,7 @@ import axios from "axios";
 const ListItem = ({ backdrop_path, id }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [trailerLink, setTrailerLink] = useState("");
-    const [player, setPlayer] = useState(null);
 
     useEffect(() => {
         axios.get(`${trialer_base_url}${id}/videos?api_key=${API_KEY}`).then((response) => {
@@ -20,7 +18,7 @@ const ListItem = ({ backdrop_path, id }) => {
 
                 if (trailer) {
                     const trailerKey = trailer.key;
-                    const youtubeUrl = `https://www.youtube.com/embed/${trailerKey}`;
+                    const youtubeUrl = `https://www.youtube.com/embed/${trailerKey}?autoplay=1&controls=0`;
                     setTrailerLink(youtubeUrl);
                 } else {
                     setTrailerLink("No Trailer Found");
@@ -39,32 +37,12 @@ const ListItem = ({ backdrop_path, id }) => {
         };
     }, [backdrop_path]);
 
-    const loadPlayer = () => {
-        if (window.YT && trailerLink) {
-            const newPlayer = new window.YT.Player("videoIframe", {
-                events: {
-                    onReady: onPlayerReady,
-                },
-            });
-            setPlayer(newPlayer);
-        }
-    };
-
-    const onPlayerReady = (event) => {
-        event.target.playVideo();
-        setIsVideoLoaded(true);
-    };
-
     return (
         <>
             {isLoaded ? (
                 <div
                     className={`w-56 group h-36 main-color overflow-hidden ml-1.5 cursor-pointer text-white hover:shadow-3xl hover:scale-150 hover:bg-[#252525] transition-all ease-in-out duration-500 rounded-lg`}
-                    onMouseEnter={() => {
-                        setIsHovered(true);
-                        setIsVideoLoaded(false);
-                        loadPlayer();
-                    }}
+                    onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
                     {!isHovered && (
@@ -74,14 +52,13 @@ const ListItem = ({ backdrop_path, id }) => {
                             alt=""
                         />
                     )}
-                    {isHovered && (
+                    {isHovered && trailerLink && (
                         <iframe
                             className="w-full h-full absolute top-0 left-0"
                             src={trailerLink}
                             allow="autoplay; encrypted-media"
                             title="Trailer"
                             allowFullScreen
-                            id="videoIframe"
                         ></iframe>
                     )}
                 </div>
