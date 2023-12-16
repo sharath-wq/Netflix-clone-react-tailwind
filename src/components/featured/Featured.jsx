@@ -19,7 +19,7 @@ const Featured = () => {
             <img className="w-full h-full object-cover" src={baseImage + backdrop_path} alt="" />
             <div className="w-1/3 absolute left-10 bottom-40 sm:left-28 sm:bottom-60 flex flex-col">
                 {/* Info */}
-                <h1 className="sm:text-6xl text-4xl text-white font-bold">{title && original_title}</h1>
+                <h1 className="sm:text-6xl text-4xl text-white font-bold sm:my-0 my-5">{title && original_title}</h1>
                 <span className="my-5 mx-0 sm:flex hidden text-base text-white font-medium">{overview}</span>
                 <div className="flex ">
                     {/* buttons */}
