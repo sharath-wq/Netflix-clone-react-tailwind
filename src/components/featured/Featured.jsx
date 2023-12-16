@@ -17,10 +17,10 @@ const Featured = () => {
     return (
         <div className="h-[90vh] relative">
             <img className="w-full h-full object-cover" src={baseImage + backdrop_path} alt="" />
-            <div className="w-1/3 absolute left-28 bottom-60 flex flex-col">
+            <div className="w-1/3 absolute left-10 bottom-40 sm:left-28 sm:bottom-60 flex flex-col">
                 {/* Info */}
-                <h1 className="text-6xl text-white font-bold">{title && original_title}</h1>
-                <span className="my-5 mx-0 text-base text-white font-medium">{overview}</span>
+                <h1 className="sm:text-6xl text-4xl text-white font-bold">{title && original_title}</h1>
+                <span className="my-5 mx-0 sm:flex hidden text-base text-white font-medium">{overview}</span>
                 <div className="flex ">
                     {/* buttons */}
                     <Button style={"bg-white text-[main-color] hover:bg-[#d2d9d8]"} icon={<FaPlay />} text={"Play"} />

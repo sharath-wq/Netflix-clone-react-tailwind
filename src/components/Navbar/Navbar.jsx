@@ -17,12 +17,12 @@ const Navbar = () => {
                 isScrolled && "main-color"
             } transition duration-700 ease-in-out`}
         >
-            <div className="px-16 py-0 flex justify-between h-20 items-center">
+            <div className="sm:px-16 px-8 py-0 flex justify-between h-20 items-center">
                 <div className="flex items-center">
                     {/* Left */}
                     <img className="h-6 mr-10" src="https://i.ibb.co/r5krrdz/logo.png" alt="Netflix Logo" />
                     {navLinks.map((navItem) => (
-                        <span className="mr-5 cursor-pointer" key={navItem}>
+                        <span className="mr-5 hidden sm:grid cursor-pointer" key={navItem}>
                             {navItem}
                         </span>
                     ))}
