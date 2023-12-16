@@ -1,5 +1,5 @@
 export const navLinks = ["Home", "TV Shows", "Movies", "My List"];
-const API_KEY = "77fe1b32a07917a3c58ccb64f21e48dc";
+export const API_KEY = "77fe1b32a07917a3c58ccb64f21e48dc";
 
 export const baseUrl = "https://api.themoviedb.org/3";
 export const baseImage = "https://image.tmdb.org/t/p/original/";
@@ -14,3 +14,5 @@ export const genres = [
     { title: "Action", link: `${baseUrl}/discover/movie?api_key=${API_KEY}&with_genres=28` },
     { title: "Romance", link: `${baseUrl}/discover/movie?api_key=${API_KEY}&with_genres=10749` },
 ];
+
+export const trialer_base_url = "https://api.themoviedb.org/3/movie/";

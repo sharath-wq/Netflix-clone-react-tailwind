@@ -1,16 +1,35 @@
 import { FaPlay } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-import { baseImage } from "../../constents";
+import { baseImage, trialer_base_url, API_KEY } from "../../constents";
 import { useState, useEffect } from "react";
 import CardShimmer from "../shimmer/CardShimmer";
+import axios from "axios";
 
-const ListItem = ({ backdrop_path }) => {
+const ListItem = ({ backdrop_path, id }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-    const trailer =
-        "https://video-previews.elements.envatousercontent.com/h264-video-previews/a21919f0-7277-4a52-a39d-7b565f73b0d9/10650710.mp4";
+    const [trailerLink, setTrailerLink] = useState("");
+    const [player, setPlayer] = useState(null);
+
+    useEffect(() => {
+        axios.get(`${trialer_base_url}${id}/videos?api_key=${API_KEY}`).then((response) => {
+            if (response.data.results.length > 0) {
+                const trailer = response.data.results.find((video) => video.type === "Trailer");
+
+                if (trailer) {
+                    const trailerKey = trailer.key;
+                    const youtubeUrl = `https://www.youtube.com/embed/${trailerKey}`;
+                    setTrailerLink(youtubeUrl);
+                } else {
+                    setTrailerLink("No Trailer Found");
+                }
+            } else {
+                setTrailerLink("No Videos available");
+            }
+        });
+    }, [id]);
 
     useEffect(() => {
         const image = new Image();
@@ -20,7 +39,19 @@ const ListItem = ({ backdrop_path }) => {
         };
     }, [backdrop_path]);
 
-    const handleVideoLoaded = () => {
+    const loadPlayer = () => {
+        if (window.YT && trailerLink) {
+            const newPlayer = new window.YT.Player("videoIframe", {
+                events: {
+                    onReady: onPlayerReady,
+                },
+            });
+            setPlayer(newPlayer);
+        }
+    };
+
+    const onPlayerReady = (event) => {
+        event.target.playVideo();
         setIsVideoLoaded(true);
     };
 
@@ -31,7 +62,8 @@ const ListItem = ({ backdrop_path }) => {
                     className={`w-56 group h-36 main-color overflow-hidden ml-1.5 cursor-pointer text-white hover:shadow-3xl hover:scale-150 hover:bg-[#252525] transition-all ease-in-out duration-500 rounded-lg`}
                     onMouseEnter={() => {
                         setIsHovered(true);
-                        setIsVideoLoaded(false); // Reset video state when hovered
+                        setIsVideoLoaded(false);
+                        loadPlayer();
                     }}
                     onMouseLeave={() => setIsHovered(false)}
                 >
@@ -43,14 +75,14 @@ const ListItem = ({ backdrop_path }) => {
                         />
                     )}
                     {isHovered && (
-                        <video
-                            className="w-full h-full object-cover"
-                            src={trailer}
-                            autoPlay
-                            loop
-                            onLoadedData={handleVideoLoaded}
-                            style={{ display: isVideoLoaded ? "block" : "none" }}
-                        ></video>
+                        <iframe
+                            className="w-full h-full absolute top-0 left-0"
+                            src={trailerLink}
+                            allow="autoplay; encrypted-media"
+                            title="Trailer"
+                            allowFullScreen
+                            id="videoIframe"
+                        ></iframe>
                     )}
                 </div>
             ) : (
